@@ -87,7 +87,7 @@ input[type="submit"] {
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
-	width: 100%;
+	width: 100%;  
 }
 
 a {
@@ -142,7 +142,7 @@ options {
 		</p>
 		<p>
 			<a href="<%=request.getContextPath()%>/home">홈으로 돌아가기</a>
-		</p>
+		</p> <!-- dfd -->
 	</div>
 </body>
 </html>

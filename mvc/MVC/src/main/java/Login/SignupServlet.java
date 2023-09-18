@@ -21,7 +21,7 @@ public class SignupServlet extends HttpServlet {
         String buyerId = req.getParameter("buyerId");
         String buyerPw = req.getParameter("buyerPw");
         String buyerName = req.getParameter("buyerName");
-        String buyerAddress = req.getParameter("buyerAddress");
+        String buyerAddress = req.getParameter("buyerAddress"); //
 
         // 중복된 아이디 체크
         LoginDAO3 dao = new LoginDAO3();

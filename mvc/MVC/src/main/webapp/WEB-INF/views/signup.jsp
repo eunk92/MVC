@@ -141,7 +141,7 @@ options {
 			<a href="<%=request.getContextPath()%>/login">로그인 화면으로 돌아가기</a>
 		</p>
 		<p>
-			<a href="<%=request.getContextPath()%>/home">홈으로 돌아가기</a>
+			<a href="<%=request.getContextPath()%>/home">홈으로 돌아가기2</a>
 		</p> <!-- dfd -->
 	</div>
 </body>

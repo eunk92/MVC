@@ -33,7 +33,8 @@
 
 	<div class="container">
 		<div class="row">
-			<table class="table tableStriped" style="text-align: center; border: 1px solid orange">
+			<table class="table tableStriped"
+				style="text-align: center; border: 1px solid darkgray">
 				<thead>
 					<tr>
 						<th style="background-color: gray; text-align: center;">번호</th>
@@ -44,34 +45,32 @@
 				</thead>
 				<tbody>
 					<%
-					ArrayList<Question> list = (ArrayList<Question>) request.getAttribute("list");
+					
+
+					Question q = (Question) request.getAttribute("list");
 					%>
-					<%
-					for (Question b : list) {
-					%>
+
 					<tr>
-						<td><%=b.getQuestionCode()%></td>
-						<form action="<%=request.getContextPath()%>/readServlet" method="post">
-							<input type="hidden" name="" id="" value="">
-							<td class="tdTitle"><a type="questionCode" href="<%=request.getContextPath()%>/read?questionCode=<%=b.getQuestionCode()%>"><%=b.getTitle()%></a></td>
-							<td class="tdId"><a href="<%=request.getContextPath()%>/myPage"><%=b.getBuyerId()%></a></td>
-						</form>
-						<td><%=b.getWriteDate()%></td>
-						
-						<td><a href="<%=request.getContextPath()%>/delete?questionCode=<%=b.getQuestionCode()%>" class="btn btnDanger">삭제</a></td>
+						<td><%=q.getQuestionCode()%></td>
+						<td class="tdTitle"><%=q.getTitle()%></td>
+						<td class="tdId"><%=q.getBuyerId()%></td>
+						<td><%=q.getWriteDate()%></td>
 					</tr>
 
-
-					<%
-					}
-					%>
+					<tr>
+						<td>내용</td>
+						<td><%=q.getQuestionContents()%></td>
+					</tr>
 
 				</tbody>
 			</table>
+
 			<a href="<%=request.getContextPath()%>/write"
 				class="btn btnPrimary pullRight">글쓰기</a>
 		</div>
+
 	</div>
+
 
 	<div class="footer">
 		<p>핸드폰판매 고객센터 이용약관 쇼핑몰 이용약관 개인정보 처리방침 회사정보 회사명에이콘통신 대표 조은경</p>
@@ -79,6 +78,8 @@
 		<p>ekzzang@naver.com 판매제휴업체 SKT - 밀수 / KT - 밀수 / LGU+ - 밀수 대표
 			김병진,김민규</p>
 		<p>사업자번호845-82-01440 통신판매업신고번호 : 제2023-서울마포-0015호</p>
+
+
 	</div>
 </body>
 </html>

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class goodsDAO {
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:ptm";
+	String url = "jdbc:oracle:thin:@localhost:1521:testdb";
 	String user = "scott";
 	String password = "tiger";
 
@@ -31,7 +31,7 @@ public class goodsDAO {
 		return con;
 	}
 
-	/* rmrmrm
+	/* 
 	 * public Goods selectOne(String goodsCode) { // db 연결 Connection con = dbcon();
 	 * 
 	 * // sql 작성 String sql = "select * from goodsTbl where goodsCode=?";

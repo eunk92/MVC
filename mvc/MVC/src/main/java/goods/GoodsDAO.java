@@ -8,10 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import Seller.Goods;
+
 public class GoodsDAO {
 	
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:testdb";
+	String url = "jdbc:oracle:thin:@localhost:1521:ptm";
 	String user = "scott";
 	String password = "tiger";
 
@@ -51,7 +53,7 @@ public class GoodsDAO {
 			
 			while(rs.next()) {
 				String goodsCode = rs.getString(1);
-				String goodsBrand = rs.getString(2);
+				int goodsBrand = rs.getInt(2);
 				String goodsName = rs.getString(3);
 				int goodsPrice = rs.getInt(4);
 				int goodsStock = rs.getInt(5);
@@ -88,7 +90,7 @@ public class GoodsDAO {
 			
 			while(rs.next()) {
 				String goodsCode = rs.getString(1);
-				String goodsBrand = rs.getString(2);
+				int goodsBrand = rs.getInt(2);
 				String goodsName = rs.getString(3);
 				int goodsPrice = rs.getInt(4);
 				int goodsStock = rs.getInt(5);
@@ -107,7 +109,68 @@ public class GoodsDAO {
 	}
 	
 	
-	
+	// 페이징을 위한 준비
+	public int getTotalCnt() {
+		Connection con = dbcon();
+		String sql = "select count(*) from goodsTbl";
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+
+		int totalCnt = 0;
+		try {
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+
+			if (rs.next()) {
+				// 1열의 갯수
+				totalCnt = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		close(rs, pst, con);
+		return totalCnt;
+	}
+
+	// 현재 페이지, 페이지에 나타낼 목록의 갯수
+	public ArrayList<Goods> getListPage(int page, int pageSize) {
+		int startPage, endPage = 0;
+
+		startPage = (page - 1) * pageSize + 1;
+		endPage = page * pageSize;
+		
+		System.out.println("start page " + startPage);
+		System.out.println("end page " + endPage);
+
+		Connection con = dbcon();
+		String sql = "select * from( select rownum num, goodsCode, goodsBrand, goodsName, goodsPrice, goodsStock from goodsTbl order by goodsCode) where num between ? and ?";
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+
+		ArrayList<Goods> list = new ArrayList<>();
+		
+		try {
+			pst = con.prepareStatement(sql);
+			pst.setInt(1, startPage);
+			pst.setInt(2, endPage);
+			rs = pst.executeQuery();
+
+			while (rs.next()) {
+				int num = rs.getInt(1);
+				String code = rs.getString(2);
+				int brand = rs.getInt(3);
+				String name = rs.getString(4);
+				int price = rs.getInt(5);
+				int stock = rs.getInt(6);
+				Goods g = new Goods(num, code, brand, name, price, stock);
+				list.add(g);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		close(rs, pst, con);
+		return list;
+	}
 	
 	
 	

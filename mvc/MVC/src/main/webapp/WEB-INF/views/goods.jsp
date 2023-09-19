@@ -24,6 +24,7 @@
 				let str1 = `<thead>
 								<tr>
 									<th></th>
+									<th>순번</th>
 									<th>상품번호</th>
 									<th>상품브랜드</th>
 									<th>상품명</th>
@@ -36,8 +37,9 @@
 				for( let i=0; i< data.length ; i++){
 					let item = data[i];
 			
-			             str1 += "<tr>";
+			             str1  += "<tr>";
 			             str1  +=   "<td><input type=\"checkbox\"></td>" ;
+			             str1  +=   "<td>"+item.num+"</td>" ;
 			             str1  +=   "<td>"+item.goodsCode+"</td>" ;
 			             str1  +=   "<td>"+item.goodsBrand+"</td>" ;
 			             str1  +=   "<td>"+item.goodsName+"</td>" ;

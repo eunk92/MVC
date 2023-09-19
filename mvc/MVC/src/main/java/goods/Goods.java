@@ -2,6 +2,7 @@ package goods;
 
 public class Goods {
 	
+	int num;
 	String goodsCode;
 	String goodsBrand;
 	String goodsName;
@@ -20,6 +21,25 @@ public class Goods {
 		this.goodsPrice = goodsPrice;
 		this.goodsStock = goodsStock;
 	}
+	
+	public Goods(int num, String goodsCode, String goodsBrand, String goodsName, int goodsPrice, int goodsStock) {
+		super();
+		this.num = num;
+		this.goodsCode = goodsCode;
+		this.goodsBrand = goodsBrand;
+		this.goodsName = goodsName;
+		this.goodsPrice = goodsPrice;
+		this.goodsStock = goodsStock;
+	}
+	
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
 
 	public String getGoodsCode() {
 		return goodsCode;

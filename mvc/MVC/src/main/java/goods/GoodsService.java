@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import Seller.Goods;
+
 
 public class GoodsService {
 
@@ -30,7 +32,26 @@ public class GoodsService {
 		return arr;
 	}
 	
-	
+	public JSONArray getListPage(int page, int pageSize) {
+		
+		ArrayList<Goods> list = dao.getListPage(page, pageSize);
+		JSONArray arr = new JSONArray();
+		
+		for(int i = 0; i<list.size(); i++) {
+			Goods g = list.get(i);
+			JSONObject o = new JSONObject();
+			o.put("num", g.getNum());
+			o.put("goodsCode", g.getGoodsCode());
+			o.put("goodsBrand", g.getGoodsBrand());
+			o.put("goodsName", g.getGoodsName());
+			o.put("goodsPrice", g.getGoodsPrice());
+			o.put("goodsStock", g.getGoodsStock());
+			arr.put(o);
+			
+		}
+		return arr;
+		
+	}
 	
 	// 상품 브랜드별 조회
 	public JSONArray getSelectCheck(String goodsBrand) {

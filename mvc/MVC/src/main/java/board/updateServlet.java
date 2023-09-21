@@ -11,27 +11,24 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-@WebServlet("/delete")
-public class deleteServlet extends HttpServlet {
+@WebServlet("/update")
+public class updateServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		BoardService s = new BoardService();
 
-		int questioncode = Integer.parseInt(req.getParameter("deletecode"));
+		String modigyTitle = req.getParameter("boardTitle");
+		String modifyContents = req.getParameter("boardContent");
+		int modifycode = Integer.parseInt(req.getParameter("questionCode"));
+		
+		System.out.println(modigyTitle);
+		System.out.println(modifyContents);
+		System.out.println(modifycode);
 		
 		
-		//resp.getWriter().print(); // 서버에 보내는 데이터
-			
-		try {
-			s.deleteBoard(questioncode);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			
-	
+		s.modifyBoard(modigyTitle,modifyContents,modifycode);
 		 
 	}
 	

@@ -116,12 +116,26 @@ section {
     margin: 0 auto;
 }
 
-button {
+.left button {
     background-color: #007bff;
     color: white;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn3{
+	background-color: #007bff;
+    color: white;
+    border: none;
+    height:20px;
+	width: 51px;
+    text-align:center;
+    margin-left:20px;
+
+	font-size: 12px;
     font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
@@ -136,6 +150,7 @@ button {
     text-align: center;
     padding-top: 10px
 }
+
 a {
     color: white;
     text-decoration: none;
@@ -143,14 +158,163 @@ a {
 .wrap{
 	height: 800px;
 }
+#a3 {
+    background-color: #007bff; 
+    color: white; 
+    border: none;
+    width:100px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block; 
+    margin: 0 auto; 
+    text-align: center; 
+}
+
 
 </style>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script>
+
+	function addToCart(itemcode) {
+		
+		$.ajax({
+			type : "get",
+			dataType : "json",
+			url: "/MVC/addCart.do",
+			data: "itemcode=" + itemcode,
+			success: function(data){
+				alert("상품이 장바구니에 추가되었습니다.");
+			},
+			
+			error:function(){
+				window.location.href="/MVC/login";
+			}
+		});
+	}
 	
 	
+	
+	
+	function sendList(code){
+		$.ajax({
+			type : "get",
+			dataType : "json",
+			url: "/MVC/goods",
+			data: "code=" + code,
+			success: function(data){
+				
+				$("#boradResult").empty(); // 화면 전체 지우기
+				$("#result").empty(); // 화면 전체 지우기
+				
+				let str1 = `<thead>
+								<tr>
+									<th colspan="6">
+									제품목록
+									</th>
+								</tr>
+								<tr>
+									<th>상품번호</th>
+									<th>상품브랜드</th>
+									<th>상품명</th>
+									<th>상품가격</th>
+									<th>상품재고</th>
+									<th></th>
+								</tr>
+						   </thead>			 
+						   <tbody>`;
+				
+				for( let i=0; i< data.length ; i++){
+					let item = data[i];
+			
+			             str1 += "<tr>";
+			             str1  +=   "<td>"+item.goodsCode+"</td>" ;
+			             str1  +=   "<td>"+item.goodsBrand+"</td>" ;
+			             str1  +=   "<td>"+item.goodsName+"</td>" ;
+			             str1  +=   "<td>"+item.goodsPrice.toLocaleString()+"</td>";
+			             str1  +=   "<td>"+item.goodsStock+"</td>" ;
+			             str1  +=   "<td><button onclick=\"addToCart('"+item.goodsCode+"')\">담기</button></td>" ;
+			             str1  += "</tr>";
+				}	 
+				
+				str1  += "</tbody>";	
+				$("#cart_count").empty();
+				$("#cart_price").empty();
+				$("#result").append(str1); 
+			},
+			
+			error:function(){
+				alert("요청 실패");
+			}
+		});
+	}	
+	
+	function loadCart() {	
+		// 장바구니 목록을 불러오는 함수
+		// $.ajax();  (  ) 인자정보를  객체타입으로 제공함 		
+		$.ajax({
+			type : "get",
+			dataType : "json",
+			url : "/MVC/cartlist.do",
+			success : function(data) {
+				let total = 0; //총 금액
+				$("#home").empty();
+				$("#result").empty();
+				$("#cart_count").empty();
+				$("#cart_price").empty();
+				$("#home").append('<a href = "/MVC/all">홈으로</a>');
+				if(data.length != 0)
+				$("#result").append("<tr>" + "<td>코드</td>" + "<td>브랜드</td>" + "<td>기종</td>"
+						+ "<td>재고</td>" + "<td>가격(원)</td>"
+						+ "</tr>");
+				//카트 목록
+				for (let i = 0; i < data.length; i++) {
+					let item = data[i];
+					let str = "<tr>" + "<td> " + item.goodsCode + "</td>" + "<td> "
+							+ item.goodsName + "</td>" + "<td> " + item.goodsBrand
+							+ "</td>" + "<td> " + item.goodsStock + "</td>"
+							+ "<td> " + item.goodsPrice.toLocaleString() + "</td>"
+							+ "<td><button onclick='deleteItem(" + i
+							+ ")'>삭제</button></td>" + "</tr>";
+					total += parseInt(item.goodsPrice);
+					$("#result").append(str);
+				}
+				$("#cart_count").append("총 " + data.length + "개의 상품이 담겼습니다.");
+				$("#cart_price").append("Total : " + total.toLocaleString() + "원 ");
+				if(data.length != 0)
+					$("#cart_price").append('<a href = "/MVC/all">주문하기</a>');
+			},
+			error : function() {
+				//
+				alert("요청에 실패했습니다");
+			}
+		});
+	}
+	
+	//삭제 함수
+	function deleteItem(index) {
+		$.ajax({
+			type : "get",
+			dataType : "json",
+			url : "/MVC/delCart",
+			data : "index=" + index,
+			success : function(data) {
+				loadCart();
+			},
+			error : function() {
+				alert("요청에 실패했습니다");
+			}
+		});
+	}
+
+	
+	
+	// 게시판 
+	// 게시판 한건 조회
 	function send( obj){
 		
 		let tr  = obj.parentElement; // 클릭한 요소의 부모 요소 받아오기
@@ -163,18 +327,18 @@ a {
 			data: "code=" + td,
 			success: function(data){
 				let item = data;
-				let str = "<tr>"
-						+ "<td>"+item.questionCode+"</td>"
-						+ "<td>"+item.title+"</td>"
-						+ "<td>"+item.buyerId+"</td>"
+				let str = "<tr id=\"boardTr1\">"
+						+ 	"<td id=\"boardNum\">"+item.num+"</td>"
+						+ 	"<td id=\"boardTitle\">"+item.title+"</td>"
+						+ 	"<td id=\"boardId\">"+item.buyerId+"</td>"
 						+ "</tr>"
-						+ "<tr>"
-						+ "<td colspan=\"3\">"+item.quetionContents+"</td>"
+						+ "<tr id=\"boardTr2\">"
+						+ 	"<td id=\"boardContent\" colspan=\"3\">"+item.quetionContents+"</td>"
 						+ "</tr>"
 						+ "<tr>"
 						+ 	"<td colspan=\"3\">"
-						+ 		"<button onclick=\"modifySend("+item.questionCode+")\">수정</button>"
-						+ 		"<button onclick=\"deleteSend("+item.questionCode+")\">삭제</button>"
+						+ 		"<button class=\"btn3\" onclick=\"modifyBtn("+item.questionCode+")\">수정</button>"
+						+ 		"<button class=\"btn3\" onclick=\"deleteSend("+item.questionCode+")\">삭제</button>"
 						+ 	"</td>"
 						+ "</tr>";
 				$("#result").empty();
@@ -187,8 +351,9 @@ a {
 	}
 	
 	
-	
+	// 게시판 글 삭제
 	function deleteSend(deletecode){
+		
 		$.ajax({
 			type : "get",
 			dataType : "text", // 서버에서 넘어오는 데이터의 타입
@@ -205,23 +370,67 @@ a {
 		});
 	}
 	
-	// 수정
-	function modifySend(deletecode){
+	
+	//게시판 글 수정 화면
+	function modifyBtn(questionCode){
+		
+		let boardNum = document.getElementById("boardNum").innerHTML;
+		let boardTitle = document.getElementById("boardTitle").innerHTML;
+		let boardId = document.getElementById("boardId").innerHTML;
+		let boardContent = document.getElementById("boardContent").innerHTML;
+		
+		let str = "<tr id=\"boardTr1\">"
+				+ 	"<td id=\"boardNum\">"+boardNum+"</td>"
+				+ 	"<td id=\"boardTitle\"><input id=\"inputTitle\" type=\"text\" value=\""+boardTitle+"\"></td>"
+				+ 	"<td id=\"boardId\">"+boardId+"</td>"
+				+ "</tr>"
+				+ "<tr id=\"boardTr2\">"
+				+ 	"<td id=\"boardContent\" colspan=\"3\"><input id=\"inputContent\" type=\"textarea\" value=\""+boardContent+"\"></td>"
+				+ "</tr>"
+				+ "<tr>"
+				+ 	"<td colspan=\"3\">"
+				+ 		"<button class=\"btn3\" onclick=\"modifysend('"+questionCode+"')\">수정</button>"
+				+ 		"<button class=\"btn3\">취소</button>"
+				+ 	"</td>"
+				+ "</tr>";
+			
+		$("#result").empty();
+		$("#result").append(str);
+	}
+	
+	
+	
+	//게시판 글 수정 
+	function modifysend(questionCode){
+		
+		let table = document.getElementById("result");
+		
+		let boardTitle = table.querySelector("#inputTitle").value;
+		let boardContent = table.querySelector("#inputContent").value;
+		
+		alert(boardTitle);
+		alert(boardContent);
+		
 		$.ajax({
 			type : "get",
 			dataType : "text", // 서버에서 넘어오는 데이터의 타입
 			url: "/MVC/update",
-			data: "deletecode=" + deletecode,
+			data: "questionCode=" + questionCode + "&boardTitle=" + boardTitle + "&boardContent=" + boardContent,
 			success: function(data){
-				alert("삭제되었습니다.");
+				alert("수정되었습니다.");
 				$("#result").empty();
-				window.location.reload(); // 새로고침
+				window.location.href="/MVC/board";
 			},
 			error:function(){
 				alert("요청 실패");
 			}
 		});
+		
+		
+		
 	}
+	
+	
 	
 </script>
 
@@ -264,7 +473,7 @@ a {
 
 	
 	<section class="container">
-		<div class="row">
+		<div class="row" id="boradResult">
 			<table class="table tableStriped" style="text-align: center; border: 1px solid orange">
 				<thead>
 					<tr>
@@ -274,11 +483,11 @@ a {
 						<th style="background-color: gray; text-align: center;">작성일</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody >
 					<% ArrayList<Question> list = (ArrayList<Question>)request.getAttribute("questionList"); %>
 					<%for(int i=0; i<list.size(); i++) {%>
 					<tr>
-						<td id="td1" onclick="send(this)"><%=list.get(i).getQuestionCode()%></td>
+						<td id="td1" onclick="send(this)"><%=list.get(i).getNum()%></td>
 						<td id="td2" onclick="send(this)"><%=list.get(i).getTitle() %></td>
 						<td id="td3" onclick="send(this)"><%=list.get(i).getBuyerId() %></td>
 						<td id="td4" onclick="send(this)"><%=list.get(i).getWriteDate() %></td>
@@ -288,12 +497,13 @@ a {
 				</tbody>
 			</table>
 			
-			<a href="<%=request.getContextPath()%>/write" class="btn btnPrimary pullRight">글쓰기</a>
+			<a id="a3" href="<%=request.getContextPath()%>/write" class="btn btnPrimary pullRight">글쓰기</a>
 				
-			<table id="result">
-			</table>	
-			
 		</div>
+		
+			<table id="result">
+			</table>
+				
 	</section>
 
 	<div class="footer">

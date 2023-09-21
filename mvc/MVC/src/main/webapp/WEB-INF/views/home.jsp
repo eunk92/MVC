@@ -255,8 +255,9 @@ a {
 				}
 				$("#cart_count").append("총 " + data.length + "개의 상품이 담겼습니다.");
 				$("#cart_price").append("Total : " + total.toLocaleString() + "원 ");
+				let totaldb = total/1000;
 				if(data.length != 0)
-					$("#cart_price").append('<a href = "/MVC/all">주문하기</a>');
+					$("#cart_price").append('<a href = "/MVC/orderAdd?code='+data[0].goodsCode+"&total="+totaldb+'">주문하기</a>');
 			},
 			error : function() {
 				//

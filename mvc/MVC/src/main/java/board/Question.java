@@ -2,6 +2,7 @@ package board;
 
 public class Question {
 
+	int num;
 	int questionCode;
 	String buyerId;
 	String title;
@@ -12,6 +13,18 @@ public class Question {
 		// TODO Auto-generated constructor stub
 	}
 
+	
+	public Question(int num, int questionCode, String buyerId, String title, String quetionContents, String writeDate) {
+		super();
+		this.num = num;
+		this.questionCode = questionCode;
+		this.buyerId = buyerId;
+		this.title = title;
+		this.quetionContents = quetionContents;
+		this.writeDate = writeDate;
+	}
+
+
 	public Question(int questionCode, String buyerId, String title, String quetionContents, String writeDate) {
 		super();
 		this.questionCode = questionCode;
@@ -20,6 +33,18 @@ public class Question {
 		this.quetionContents = quetionContents;
 		this.writeDate = writeDate;
 	}
+
+	
+	
+	public int getNum() {
+		return num;
+	}
+
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
 
 	public int getQuestionCode() {
 		return questionCode;

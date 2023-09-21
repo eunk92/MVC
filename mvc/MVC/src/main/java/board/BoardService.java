@@ -20,11 +20,12 @@ public class BoardService {
 	
 	
 	// 한건 조회
-	public JSONObject getSelectCheck(int questioncode) {
+	public JSONObject getSelectCheck(int rownum) {
 		
-		Question q = dao.selectCheck(questioncode);
+		Question q = dao.selectCheck(rownum);
 		JSONObject obj = new JSONObject();
 		
+		obj.put("num", q.getNum());
 		obj.put("questionCode", q.getQuestionCode());
 		obj.put("buyerId", q.getBuyerId());
 		obj.put("title", q.getTitle());
@@ -40,6 +41,13 @@ public class BoardService {
 		dao.insertContents(b);
 	}
 	
+	
+	// 글 수정
+	public void modifyBoard(String title, String quetioncontents, int questioncode) {
+		dao.modifyOne(title, quetioncontents, questioncode );
+	}
+	
+	
 	// 글 삭제
 	public void deleteBoard(int code) throws SQLException {
 		dao.deleteOne(code);
@@ -54,7 +62,7 @@ public class BoardService {
 		ArrayList<Question> q = s.getSelectAll();
 		System.out.println(q);
 		
-		JSONObject qu = s.getSelectCheck(1);
+		JSONObject qu = s.getSelectCheck(5);
 		System.out.println(qu);
 	}
 }

@@ -43,7 +43,9 @@ public class BoardDAO {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		
-		String sql = "select * from questionTbl";
+		
+		String sql = "select rownum as num, questioncode, buyerid, title, quetioncontents, writedate  "
+				   + "from (select * from questionTbl order by questioncode)";
 		
 		ArrayList<Question> questionList = new ArrayList<Question>();
 		
@@ -52,14 +54,15 @@ public class BoardDAO {
 			rs = pst.executeQuery();	
 			
 			while(rs.next()) {
-				int questionCode = rs.getInt(1);
-				String buyerId = rs.getString(2);
-				String title = rs.getString(3);
-				String quetionContents = rs.getString(4);
-				String writeDate = rs.getString(5);
+				int num = rs.getInt(1);
+				int questionCode = rs.getInt(2);
+				String buyerId = rs.getString(3);
+				String title = rs.getString(4);
+				String quetionContents = rs.getString(5);
+				String writeDate = rs.getString(6);
 				
 				
-				Question question = new Question(questionCode, buyerId, title, quetionContents, writeDate );
+				Question question = new Question(num, questionCode, buyerId, title, quetionContents, writeDate );
 				questionList.add(question);
 			}
 		} catch (SQLException e) {
@@ -72,28 +75,32 @@ public class BoardDAO {
 	
 	
 	//게시판 글 한건 조회
-	public Question selectCheck(int questioncode){
+	public Question selectCheck(int rownum){
 		Connection con = dbcon();
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		
-		String sql = "select * from questionTbl where questioncode = ?";
+		String sql = "select * "
+				   + "from (select rownum as num, questioncode, buyerid, title, quetioncontents, writedate "
+				   + "from (select * from questionTbl order by questioncode)) "
+				   + "where num = ? ";
 		
 		Question question = null;
 		
 		try {
 			pst=con.prepareStatement(sql);
-			pst.setInt(1, questioncode);
+			pst.setInt(1, rownum);
 			rs = pst.executeQuery()	;
 			
 			if(rs.next()) {
-				int questionCode = rs.getInt(1);
-				String buyerId = rs.getString(2);
-				String title = rs.getString(3);
-				String quetionContents = rs.getString(4);
-				String writeDate = rs.getString(5);
+				int num = rs.getInt(1);
+				int questionCode = rs.getInt(2);
+				String buyerId = rs.getString(3);
+				String title = rs.getString(4);
+				String quetionContents = rs.getString(5);
+				String writeDate = rs.getString(6);
 				
-				question = new Question(questionCode, buyerId, title, quetionContents, writeDate );
+				question = new Question(num, questionCode, buyerId, title, quetionContents, writeDate );
 				
 			}
 		} catch (SQLException e) {
@@ -140,7 +147,33 @@ public class BoardDAO {
 		}
 	}
 	
+	
 	// 게시판 글 수정
+	public void modifyOne(String title, String quetioncontents, int questioncode) {
+		Connection con = dbcon();
+		String sql = "update questionTbl set title = ?, quetioncontents = ?   where questioncode = ?";
+		PreparedStatement pst = null;
+		
+		try {
+			pst = con.prepareStatement(sql);
+			pst.setString(1, title); 
+			pst.setString(2, quetioncontents); 
+			pst.setInt(3, questioncode); 
+			
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		close(pst, con);
+		
+	}
+	
+	
+	
+	
+	
 	
 	//게시글 삭제
 	public void deleteOne(int code) throws SQLException {		

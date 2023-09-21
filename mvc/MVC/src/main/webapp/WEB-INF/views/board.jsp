@@ -9,75 +9,143 @@
 <title>게시판( •̀ ω •́ )✧</title>
 
 <style>
-	body {
-		margin: 0;
-		padding: 0;
-	}
-	
-	.header {
-		height: 100px;
-		background-color: blue;
-		color: white;
-		text-align: center;
-		line-height: 50px;
-		padding: 10px;
-	}
-	
-	.navbar {
-		height: 70px;
-		background-color: gray;
-		color: white;
-		line-height: 20px;
-	}
-	
-	.navbar ul {
-		list-style-type: none;
-		padding: 0;
-		display: flex;
-		justify-content: space-between;
-	}
-	
-	.navbar .left {
-		
-	}
-	
-	.navbar .right {
-		
-	}
-	
-	.navbar li {
-		display: inline;
-		margin-right: 10px;
-	}
-	
-	.body {
-		height: 500px;
-		background-color: bluesky;
-		text-align: center;
-		padding-top: 50px;
-	}
-	
-	.boardZone{
-	
-	}
-	.tableStripedTop{
-		text-align: center;
-		border: 1px solid darkgray;
-		
-	}
-	
-	.tr1{
-		background-color: gray; 
-		text-align: center;
-	}
-	
-	.footer {
-		height: 200px;
-		background-color: yellowgreen;
-		color: black;
-		text-align: center;
-	}
+body {
+
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.header {
+
+	width : 100%;
+    background-color: #2e3b4e;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.navbar {
+
+display: flex;
+    background-color:  #2e3b4e;;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row; /* 추가된 부분 */
+}
+
+.navbar .left {
+display: flex;
+    justify-content: flex-start;
+}
+
+.navbar .left button {
+    background-color: #2e3b4e;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.navbar .right {
+display: flex;
+    justify-content: flex-end;
+
+    margin-left: auto; /* 추가된 부분 */
+}
+
+
+.navbar .right li {
+    display: inline;
+    margin-right: 10px;
+}
+
+.body {
+	height:100%;
+    background-color: #fff;
+    text-align: center;
+    padding: 50px 0;
+}
+
+table {
+    max-width: 100%;
+    width: 80%; /* 테이블의 최대 너비의 80%로 설정 */
+    border-collapse: collapse;
+    box-shadow: 0px 0px 5px #ccc;
+    margin: 20px auto;
+}
+
+table th, table td {
+    padding: 8px; /* 셀 안의 내용과 여백(padding)을 조정 */
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: center;
+}
+
+table td {
+    text-align: center;
+}
+
+/* 장바구니 테이블 내용 스크롤 가능하도록 수정 */
+section {
+    height: 600px;
+    overflow-y: auto;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.footer {
+    width: 100%;
+    height: 200px;
+    background-color: #2e3b4e;
+    color: white;
+    text-align: center;
+    padding-top: 10px
+}
+a {
+    color: white;
+    text-decoration: none;
+}
+.wrap{
+	height: 800px;
+}
+
 </style>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script>
@@ -137,6 +205,7 @@
 		});
 	}
 	
+	// 수정
 	function modifySend(deletecode){
 		$.ajax({
 			type : "get",
@@ -164,13 +233,15 @@
 
 	<div class="header">
 		<h1>핸드폰창고</h1>
-	</div>
+	
 	<div class="navbar">
 			<div class="left">
 				<button value="0" onclick="sendList(0)">삼성</button>
 				<button value="1" onclick="sendList(1)">애플</button>
 				<button value="2" onclick="sendList(2)">전체</button>
+				<button onclick="loadCart()" class="cart-button">장바구니</button>
 				<button onclick="window.location.href='<%=request.getContextPath()%>/board'">게시판</button>
+				<button onclick="window.location.href='<%=request.getContextPath()%>/home'">홈화면</button>
 			</div>
 			<ul class="right">
 				<%
@@ -179,15 +250,18 @@
 				<%
 				if (inputId == null) {
 				%>
-				<li><a href="<%=request.getContextPath()%>/login">로그인</a></li>
+				<li><a href="<%=request.getContextPath()%>/login">로그인</a>   |
+				 <a href="<%=request.getContextPath() %>/signup">    회원가입</a> </li>
 				<%
 				} else {
 				%>
-				<li><a href="<%=request.getContextPath()%>/logout">로그아웃</a></li> <%
+				<li><a href="<%=request.getContextPath()%>/logout">로그아웃</a> <%
 				} %>
-				<li> <a href="<%=request.getContextPath() %>/signup">회원가입</a></li>
+				
 			</ul>
+			</div>
 	</div>
+
 	
 	<section class="container">
 		<div class="row">

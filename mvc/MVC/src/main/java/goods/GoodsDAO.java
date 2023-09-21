@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 public class GoodsDAO {
 	
 	String driver = "oracle.jdbc.driver.OracleDriver";
@@ -111,6 +112,47 @@ public class GoodsDAO {
 	
 	
 	
+	
+	
+	// 병진
+	public Goods selectOne (String goodscode) {
+		Connection con = dbcon();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		Goods goods = null;
+		
+		String sql = "select goodsCode, decode(goodsbrand, '0', '삼성', '1', '애플'), "
+				   + "goodsName, goodsprice, goodsstock from goodsTbl "
+				   + "where goodsCode = ?";
+		
+		try {
+			pst = con.prepareStatement(sql);
+			pst.setString(1, goodscode);
+			
+			rs = pst.executeQuery();
+			if(rs.next()) {
+				String goodsCode = rs.getString(1);
+				String goodsBrand = rs.getString(2);
+				String goodsName = rs.getString(3);
+				int goodsPrice = rs.getInt(4);
+				int goodsStock = rs.getInt(5);
+				
+				goods = new Goods(goodsCode, goodsBrand, goodsName, goodsPrice, goodsStock);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		close(con,pst,rs);
+		return goods;
+	}
+	
+	
+	
+	
+	
+	
 	public void close(AutoCloseable ...a) {
 		for(AutoCloseable item : a) {
 			try {
@@ -127,7 +169,6 @@ public class GoodsDAO {
 	
 	public static void main(String[] args) {
 		GoodsDAO dao = new GoodsDAO()	;
-		
 		ArrayList<Goods> a = dao.selectAll();
 		System.out.println(a);
 	}

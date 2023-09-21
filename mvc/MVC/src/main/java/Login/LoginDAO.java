@@ -51,8 +51,7 @@ public class LoginDAO {
 
 		try {
 			// 데이터베이스 연결
-
-			String sql = "Select buyerId , buyerPw from buyerTbl where buyerId=?";
+			String sql = "Select buyerId , buyerPw from buyerTbl where buyerId = ?";
 			pst = con.prepareStatement(sql);
 			pst.setString(1, inputId);
 
@@ -77,6 +76,7 @@ public class LoginDAO {
 		return false;
 	}
 
+	
 	// 판매자 로그인
 	public boolean login1(String inputId, String inputPw) {
 		Connection con = dbcon();
@@ -86,7 +86,7 @@ public class LoginDAO {
 		try {
 			// 데이터베이스 연결
 
-			String sql = "Select sellerId , sellerPw from SellerTbl where sellerId=?";
+			String sql = "Select sellerId , sellerPw from SellerTbl where sellerId = ?";
 			pst = con.prepareStatement(sql);
 			pst.setString(1, inputId);
 
@@ -110,6 +110,9 @@ public class LoginDAO {
 		// 로그인 실패
 		return false;
 	}
+	
+	
+	
 	//회원가입
 	public boolean signupUser(String buyerId, String buyerPw, String buyerName, String buyerAddress) {
 		Connection con = dbcon();
@@ -138,6 +141,9 @@ public class LoginDAO {
 		// 회원가입 실패
 		return false;
 	}
+	
+	
+	
 	//회원가입 중복 확인
 	public boolean idCheck(String buyerId) {
 		Connection con = dbcon();

@@ -92,7 +92,8 @@ input:focus {
 <body>
     <div class="header">
         <h1>Login</h1>
-     <p> ${message}</p> 
+	    <!-- 회원옵션 미선택시 출력되는 메시지  -->
+	    <p> ${message}</p> 
   
     </div>
     
@@ -100,19 +101,18 @@ input:focus {
         <!-- 로그인 폼 -->
         <form class="login-form" action="<%=request.getContextPath()%>/login" method="post">
            <div class="options">
-             <label><input type="radio" name="option" value="seller"> 판매 회원</label>
-<label><input type="radio" name="option" value="buyer"> 구매 회원</label>
-            </div>
-            <span>아이디 :</span>
-            <input type="text" name="Id"  placeholder="ID">
-            <br>
-            <span>비밀번호 :</span>
-            <input type="password" name="Pw"  placeholder="PASSWORD" >
-            <br>
+            	<label><input type="radio" name="option" value="seller"> 판매 회원</label>
+				<label><input type="radio" name="option" value="buyer"> 구매 회원</label>
+           </div>
+            
+           <span>아이디 :</span>
+           <input type="text" name="Id"  placeholder="ID">
+           <br>
+           <span>비밀번호 :</span>
+           <input type="password" name="Pw"  placeholder="PASSWORD" >
+           <br>
          
-            <input type="submit" value="로그인">
-          
-                 
+           <input type="submit" value="로그인">
         </form>
         
     

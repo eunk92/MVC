@@ -1,4 +1,4 @@
-package Board;
+package board;
 
 import java.io.IOException;
 
@@ -8,24 +8,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import board.Question;
+
 @WebServlet("/write")
-public class writeServlet extends HttpServlet {
+public class WriteServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setCharacterEncoding("utf-8");
-		resp.setContentType("text/html;charset=utf-8");
+		
 		req.getRequestDispatcher("WEB-INF/views/write.jsp").forward(req, resp);
 
 	}
+	
+	
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		
-		
-		req.setCharacterEncoding("UTF-8");
-		resp.setCharacterEncoding("utf-8");
-		resp.setContentType("text/html;charset=utf-8");
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		String buyerId = req.getParameter("buyerid");
 		String title = req.getParameter("title");
@@ -36,14 +33,14 @@ public class writeServlet extends HttpServlet {
 		System.out.println(content);
 		
 
-		writeService ws = new writeService();
-		boardDAO dao = new boardDAO();
+		BoardService ws = new BoardService();
+		BoardDAO dao = new BoardDAO();
 
 		Question q = new Question();
 		
 		q.setBuyerId("kdy");
 		q.setTitle(title);
-		q.setQuestionContents(content);
+		q.setQuetionContents(content);
 
 		dao.insertContents(q);
 

@@ -11,17 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 
-@WebServlet("/goods.do")
+@WebServlet("/goods")
 public class GoodsSelectServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		response.setCharacterEncoding("utf-8");
-		response.setContentType("text/html;charset=utf-8");
-		
+//		response.setCharacterEncoding("utf-8");
+//		response.setContentType("text/html;charset=utf-8");
+//		
 		GoodsService s = new GoodsService();
 		JSONArray arr = null;
-		
 		
 		// 버튼 눌렀을때 값 가져오기
 		String code = request.getParameter("code");

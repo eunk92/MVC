@@ -1,4 +1,4 @@
-package Seller;
+package Page;
 
 public class PageHandler {
 	// 받아오는 값
@@ -86,14 +86,6 @@ public class PageHandler {
 		return grpEndPage;
 	}
 	
-//	public static void main(String[] args) {
-//		//	PageHandler(int currentPage, int totRecords, int pageSize, int grpSize)
-//		PageHandler h = new PageHandler(2, 33, 4, 5);
-//		
-//		System.out.println(h.getTotalPage());	// 9
-//		System.out.println(h.getCurrentGrp());	// 1
-//		System.out.println(h.getGrpStartPage());	// 1
-//		System.out.println(h.getGrpEndPage());	// 5
-//	}
+
 	
 }

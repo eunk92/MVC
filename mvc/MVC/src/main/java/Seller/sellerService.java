@@ -2,9 +2,11 @@ package Seller;
 
 import java.util.ArrayList;
 
+import goods.Goods;
+
 public class sellerService {
 	
-	goodsDAO dao = new goodsDAO();
+	sellerDAO dao = new sellerDAO();
 	
 	// 전체 조회
 	public ArrayList<Goods> selectAll(){
@@ -26,21 +28,14 @@ public class sellerService {
 		dao.deleteOne(goodsCode);
 	}
 	
-	public int getTotalCnt() {
-		return dao.getTotalCnt();
+	//민규
+	public boolean RegisterGoods2(String goodsCode,int goodsBrand,String goodsName,int goodsPrice,int goodsStock) {
+		return dao.RegisterGoods2(goodsCode, goodsBrand, goodsName, goodsPrice, goodsStock);
 	}
 	
-	// 페이징을 겸한 전체 조회
-	public  ArrayList<Goods> getListPage(int page, int pageSize){
-		return dao.getListPage(page, pageSize);
+	public boolean GoodsCodeCheck(String goodsCode ) {
+		return dao.codeCheck(goodsCode);
 	}
 	
-	public static void main(String[] args) {
-		sellerService s = new sellerService();
-		ArrayList<Goods> result = s.selectAll();
-		for (Goods goods : result) {
-		    System.out.println(goods);
-		}
-	}
 
 }

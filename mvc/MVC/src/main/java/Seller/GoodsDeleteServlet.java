@@ -15,6 +15,7 @@ public class GoodsDeleteServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		
 		resp.setContentType("text/html;charset=UTF-8");
         req.setCharacterEncoding("UTF-8");
         
@@ -24,7 +25,10 @@ public class GoodsDeleteServlet extends HttpServlet{
 		
 		s.deleteGoods(goodsCode);
 		
-		resp.sendRedirect("/TeamProject/seller");
+		resp.sendRedirect("/MVC/seller.do");
+		
+		
+		
 	}
 	
 }

@@ -1,4 +1,4 @@
-package Login;
+package Filter;
 
 import java.io.IOException;
 
@@ -31,6 +31,8 @@ public class LoginFilter implements Filter {
 		}else {
 			String path = h_request.getContextPath();
 			h_response.sendRedirect(path+"/login");
+			
 		}
+		
 	}
 }

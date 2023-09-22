@@ -337,16 +337,16 @@ height: 300px;
 
 <body>
 	<div class="header">
-		<h1>핸드폰창고</h1>
+		<h1 onclick="window.location.href='<%=request.getContextPath()%>/home'" style="cursor:pointer;">Resell SHOP</h1>
 	
 	<div class="navbar">
 			<div class="left">
-				<button value="0" onclick="sendList(0)">삼성</button>
+				<button value="0" onclick="sendList(0);">삼성</button>
 				<button value="1" onclick="sendList(1)">애플</button>
 				<button value="2" onclick="sendList(2)">전체</button>
 				<button onclick="loadCart()" class="cart-button">장바구니</button>
 				<button onclick="window.location.href='<%=request.getContextPath()%>/board'">게시판</button>
-				<button onclick="window.location.href='<%=request.getContextPath()%>/home'">홈화면</button>
+				<!-- <button onclick="window.location.href='<%=request.getContextPath()%>/home'">홈화면</button> -->
 			</div>
 			<ul class="right">
 				<%
@@ -368,11 +368,12 @@ height: 300px;
 	</div>
 
 
+
 	<section>
 		<div class="body" id="boradResult">
 			<div class="writeForm">
 				<h2>글쓰기</h2>
-				<form action="<%=request.getContextPath()%>/write" method="post">
+				<form action="<%=request.getContextPath()%>/write.do" method="post">
 					<label class="writeLabel" for="title">제목:</label><br> <input type="text" id="title" name="title"><br>
 					<br> <label class="writeLabel" for="content">내용:</label><br>
 					<textarea id="content" name="content" class="writeTextarea" maxlength="300"></textarea>

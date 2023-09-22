@@ -196,7 +196,55 @@ public class BoardDAO {
 	
 	
 	
-	
+	// 게시글 내용 검색
+	public ArrayList<Question> performSearch(String query) {
+	    Connection con = dbcon();
+	    PreparedStatement pst = null;
+	    ResultSet rs = null;
+	    ArrayList<Question> searchResults = new ArrayList<>();
+
+	    String sql = "select * "
+	    		+ "from (select rownum as num, questioncode, buyerid, title, quetioncontents, writedate "
+	    		+ "from (select * from questionTbl order by questioncode)) "
+	    		+ "where title like ? or title like ? or title like ? or title like ? "
+	    		+ "or quetioncontents like ? or quetioncontents like ? or quetioncontents like ? or quetioncontents like ?";
+	   
+	    try {
+	        pst = con.prepareStatement(sql);
+	        
+	        pst.setString(1, query);
+	        pst.setString(2, "%" + query);
+	        pst.setString(3, query + "%");
+	        pst.setString(4, "%" + query + "%");
+	        
+	        pst.setString(5, query);
+	        pst.setString(6, "%" + query);
+	        pst.setString(7, query + "%");
+	        pst.setString(8, "%" + query + "%");
+
+	        rs = pst.executeQuery();
+
+	        while (rs.next()) {
+	            
+	            int num = rs.getInt(1);
+				int questionCode = rs.getInt(2);
+				String buyerId = rs.getString(3);
+				String title = rs.getString(4);
+				String quetionContents = rs.getString(5);
+				String writeDate = rs.getString(6);
+	            
+				Question question = new Question(num, questionCode, buyerId, title, quetionContents, writeDate );
+				
+				searchResults.add(question);
+				
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(rs, pst, con);
+	    }
+	    return searchResults;
+	}
 	
 
 	// 자원반납
@@ -217,7 +265,8 @@ public class BoardDAO {
 		ArrayList<Question> list = dao.selectAll();
 		System.out.println(list);
 		
-		Question a = dao.selectCheck(1);
+		String str = "은경";
+		ArrayList<Question> a = dao.performSearch(str);
 		System.out.println(a);
 	}
 	

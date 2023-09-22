@@ -53,7 +53,10 @@ public class BoardService {
 		dao.deleteOne(code);
 	}
 	
-	
+	// 글 검색
+	public ArrayList<Question> searchContents(String query) {
+        return dao.performSearch(query);
+    }
 	
 	
 	

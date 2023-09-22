@@ -7,10 +7,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import board.Question;
 
-@WebServlet("/write")
+@WebServlet("/write.do")
 public class WriteServlet extends HttpServlet {
 	
 	@Override
@@ -24,13 +25,16 @@ public class WriteServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		String buyerId = req.getParameter("buyerid");
+		
+		HttpSession session = req.getSession();
+		String buyerId = (String)session.getAttribute("Id");
+		
 		String title = req.getParameter("title");
 		String content = req.getParameter("content");
 		
-		System.out.println(buyerId);
-		System.out.println(title);
-		System.out.println(content);
+//		System.out.println(buyerId);
+//		System.out.println(title);
+//		System.out.println(content);
 		
 
 		BoardService ws = new BoardService();
@@ -38,7 +42,7 @@ public class WriteServlet extends HttpServlet {
 
 		Question q = new Question();
 		
-		q.setBuyerId("kdy");
+		q.setBuyerId(buyerId);
 		q.setTitle(title);
 		q.setQuetionContents(content);
 

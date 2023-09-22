@@ -69,7 +69,7 @@ public class PageDAO {
 			System.out.println("end page " + endPage);
 
 			Connection con = dbcon();
-			String sql = "select * from( select rownum num, goodsCode, goodsBrand, goodsName, goodsPrice, goodsStock from goodsTbl order by goodsCode) where num between ? and ?";
+			String sql = "select * from( select rownum num, goodsCode, decode(goodsbrand, '0', '삼성', '1', '애플'), goodsName, goodsPrice, goodsStock from goodsTbl order by goodsCode) where num between ? and ?";
 			PreparedStatement pst = null;
 			ResultSet rs = null;
 
